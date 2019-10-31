@@ -6,7 +6,7 @@
         android:title="@string/list_photo" />
     <item
         android:id="@+id/search_photos"
-        android:icon="@drawable/ic_launcher_search_foreground"
+        android:icon="@drawable/ic_search"
         android:title="@string/search_list_photo" />
 
 </menu>

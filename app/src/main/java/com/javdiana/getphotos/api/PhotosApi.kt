@@ -8,6 +8,15 @@ import retrofit2.http.Query
 interface PhotosApi {
     @GET("photos")
     fun getPhotos(
-        @Query("client_id") clientId: String
+        @Query("client_id") clientId: String,
+        @Query("per_page") perPage: Int,
+        @Query("page") page: Int
+    ): Observable<ArrayList<Photo>>
+
+    @GET("search/photos")
+    fun getSearchedPhotos(
+        @Query("query") query: String,
+        @Query("client_id") clientId: String,
+        @Query("per_page") perPage: Int
     ): Observable<ArrayList<Photo>>
 }

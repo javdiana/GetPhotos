@@ -1,4 +1,4 @@
-package com.javdiana.getphotos.view.listphotos
+package com.javdiana.getphotos.view.searchphotos
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,29 +9,28 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.javdiana.getphotos.R
-import com.javdiana.getphotos.R.id.imgPhoto
 import com.javdiana.getphotos.model.Photo
-import com.javdiana.getphotos.view.listphotos.ListPhotoAdapter.ListPhotoHolder
+import com.javdiana.getphotos.view.searchphotos.SearchListPhotoAdapter.SearchListPhotoHolder
 
-class ListPhotoAdapter(private val retry: () -> Unit) :
-    PagedListAdapter<Photo, ListPhotoHolder>(PostDiffCallback()) {
+class SearchListPhotoAdapter() :
+    PagedListAdapter<Photo, SearchListPhotoHolder>(PostDiffCallback()) {
 
-    override fun onBindViewHolder(holder: ListPhotoHolder, position: Int) {
+    override fun onBindViewHolder(holder: SearchListPhotoHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListPhotoHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchListPhotoHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.image_item, parent, false)
-        return ListPhotoHolder(view)
+        return SearchListPhotoHolder(view)
     }
 
-    class ListPhotoHolder(itemView: View) :
+    class SearchListPhotoHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(photo: Photo?) {
-            val imgPhoto: ImageView = itemView.findViewById(imgPhoto)
-            Glide.with(itemView).load(photo!!.urls.small).into(imgPhoto)
+            val imgPhoto: ImageView = itemView.findViewById(R.id.imgPhoto)
+            Glide.with(itemView).load(photo?.urls?.small).into(imgPhoto)
         }
     }
 }

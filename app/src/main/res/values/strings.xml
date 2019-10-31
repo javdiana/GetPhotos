@@ -2,4 +2,5 @@
     <string name="app_name">GetPhotos</string>
     <string name="list_photo">list_photo</string>
     <string name="search_list_photo">search list photo</string>
+    <string name="search_title">search</string>
 </resources>

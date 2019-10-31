@@ -1,58 +1,42 @@
 package com.javdiana.getphotos.view.listphotos
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.javdiana.getphotos.api.service.PhotosService
-import com.javdiana.getphotos.api.service.Utils
 import com.javdiana.getphotos.model.Photo
-import com.javdiana.getphotos.view.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import rx.Subscription
+import io.reactivex.disposables.CompositeDisposable
 
 
-class ListPhotosViewModel() : BaseViewModel() {
+class ListPhotosViewModel : ViewModel() {
+    var photos: LiveData<PagedList<Photo>>
+    private val photosService = PhotosService.getInstance()
+    private val compositeDisposable = CompositeDisposable()
+    private val pageSize = 30
+    private val photosDataSourceFactory: PhotosDataSourceFactory
 
-    var photos = MutableLiveData<ArrayList<Photo>>()
-    private lateinit var subscription: Subscription
-
-
-    private fun getObserver(): Observer<ArrayList<Photo>> {
-        return object : io.reactivex.Observer<ArrayList<Photo>> {
-            override fun onNext(photo: ArrayList<Photo>) {
-                Log.d(TAG, "onNext: $photo")
-                photos.postValue(photo)
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                addDisposable(d)
-            }
-
-            override fun onError(e: Throwable) {
-                Log.d(TAG, "onError: ${e.message}")
-            }
-
-            override fun onComplete() {
-                Log.d(TAG, "onComplete")
-            }
-        }
+    init {
+        photosDataSourceFactory = PhotosDataSourceFactory(compositeDisposable, photosService)
+        val config = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setInitialLoadSizeHint(pageSize * 2)
+            .setEnablePlaceholders(false)
+            .build()
+        photos = LivePagedListBuilder<Int, Photo>(photosDataSourceFactory, config).build()
     }
 
-    fun getPhotos() {
-        val myObservable = getObservable()
-
-        val myObserver = getObserver()
-
-        myObservable?.subscribeOn(Schedulers.newThread())?.subscribe(myObserver)
+    fun retry() {
+        photosDataSourceFactory.photosLiveData.value?.retry()
     }
 
-    private fun getObservable(): Observable<ArrayList<Photo>>? {
-        return PhotosService.getInstance().getApi().getPhotos(Utils.API_KEY)
+    fun listIsEmpty(): Boolean {
+        return photos.value?.isEmpty() ?: true
     }
 
-    companion object {
-        const val TAG = "Tag"
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
+
 }
