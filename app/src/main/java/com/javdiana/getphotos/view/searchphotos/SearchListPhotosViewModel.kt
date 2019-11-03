@@ -1,46 +1,44 @@
-package com.javdiana.getphotos.view.listphotos
+package com.javdiana.getphotos.view.searchphotos
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.javdiana.getphotos.api.service.PhotosService
-import com.javdiana.getphotos.datasource.photos.PhotosDataSourceFactory
+import com.javdiana.getphotos.datasource.search.SearchPhotoDataSourceFactory
 import com.javdiana.getphotos.model.Photo
+import com.javdiana.getphotos.view.base.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
+import retrofit2.http.Query
 
-
-class ListPhotosViewModel : ViewModel() {
-    var photos: LiveData<PagedList<Photo>>
+class SearchListPhotosViewModel() : BaseViewModel() {
+    var query = ""
+    lateinit var searchPhotos: LiveData<PagedList<Photo>>
     private val photosService = PhotosService.getInstance()
     private val compositeDisposable = CompositeDisposable()
     private val pageSize = 30
-    private val photosDataSourceFactory: PhotosDataSourceFactory
+    private lateinit var searchPhotosDataSourceFactory: SearchPhotoDataSourceFactory
 
-    init {
-        photosDataSourceFactory = PhotosDataSourceFactory(
+    fun configDataSourceFactory(){
+        searchPhotosDataSourceFactory = SearchPhotoDataSourceFactory(
             compositeDisposable,
-            photosService
+            photosService,
+            query
         )
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
-        photos = LivePagedListBuilder<Int, Photo>(photosDataSourceFactory, config).build()
+        searchPhotos =
+            LivePagedListBuilder<Int, Photo>(searchPhotosDataSourceFactory, config).build()
     }
 
     fun retry() {
-        photosDataSourceFactory.photosLiveData.value?.retry()
-    }
-
-    fun listIsEmpty(): Boolean {
-        return photos.value?.isEmpty() ?: true
+        searchPhotosDataSourceFactory.searchPhotosLiveData.value?.retry()
     }
 
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
     }
-
 }

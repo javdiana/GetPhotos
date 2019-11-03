@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.javdiana.getphotos.R.id.list_photos
 import com.javdiana.getphotos.R.id.search_photos
 import com.javdiana.getphotos.view.listphotos.ListPhotosFragment
-import com.javdiana.getphotos.view.searchphotos.SearchPhotosFragment
+import com.javdiana.getphotos.view.searchphotos.SearchListPhotosFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     fragment = ListPhotosFragment()
                 }
                 search_photos -> {
-                    fragment = SearchPhotosFragment()
+                    fragment = SearchListPhotosFragment()
                 }
             }
             if (fragment != null) {

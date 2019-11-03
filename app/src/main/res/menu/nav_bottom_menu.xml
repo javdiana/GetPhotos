@@ -3,10 +3,10 @@
     <item
         android:id="@+id/list_photos"
         android:icon="@drawable/ic_picture"
-        android:title="@string/list_photo" />
+        android:title="" />
     <item
         android:id="@+id/search_photos"
-        android:icon="@drawable/ic_launcher_search_foreground"
-        android:title="@string/search_list_photo" />
+        android:icon="@drawable/ic_search"
+        android:title="" />
 
 </menu>

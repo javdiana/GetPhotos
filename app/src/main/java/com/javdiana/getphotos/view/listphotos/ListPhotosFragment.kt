@@ -7,40 +7,38 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.javdiana.getphotos.R
+import kotlinx.android.synthetic.main.fragment_list_photos.*
 
 class ListPhotosFragment : Fragment() {
     private lateinit var viewModel: ListPhotosViewModel
-    private val adapter = ListPhotoAdapter()
-    private lateinit var rvPhotos: RecyclerView
+    private lateinit var adapter: ListPhotoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_list_photos, container, false)
 
-        rvPhotos = view.findViewById(R.id.rvPhotos)
+        return inflater.inflate(R.layout.fragment_list_photos, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initViewModel()
         initPhotos()
-
-        return view
     }
 
     private fun initViewModel() {
         viewModel = ListPhotosViewModel()
-        viewModel.getPhotos()
-
-        viewModel.photos.observe(this, Observer { list ->
-            adapter.submitList(list.toMutableList())
-        })
     }
 
     private fun initPhotos() {
         rvPhotos.layoutManager = GridLayoutManager(activity, 3)
+        adapter = ListPhotoAdapter { viewModel.retry() }
         rvPhotos.adapter = adapter
+        viewModel.photos.observe(this, Observer {
+            adapter.submitList(it)
+        })
     }
 }
