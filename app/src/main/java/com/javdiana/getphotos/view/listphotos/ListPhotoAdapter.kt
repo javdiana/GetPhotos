@@ -31,7 +31,7 @@ class ListPhotoAdapter(private val retry: () -> Unit) :
 
         fun bind(photo: Photo?) {
             val imgPhoto: ImageView = itemView.findViewById(imgPhoto)
-            Glide.with(itemView).load(photo!!.urls.small).into(imgPhoto)
+            Glide.with(itemView).load(photo!!.urls.thumb).into(imgPhoto)
         }
     }
 }

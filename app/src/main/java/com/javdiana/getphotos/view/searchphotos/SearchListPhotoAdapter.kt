@@ -12,16 +12,18 @@ import com.javdiana.getphotos.R
 import com.javdiana.getphotos.model.Photo
 import com.javdiana.getphotos.view.searchphotos.SearchListPhotoAdapter.SearchListPhotoHolder
 
-class SearchListPhotoAdapter() :
+class SearchListPhotoAdapter(private val retry: () -> Unit) :
     PagedListAdapter<Photo, SearchListPhotoHolder>(PostDiffCallback()) {
 
     override fun onBindViewHolder(holder: SearchListPhotoHolder, position: Int) {
-        holder.bind(getItem(position))
+        val photo = getItem(position)
+        println(photo)
+        holder.bind(photo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchListPhotoHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.image_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.search_image_photo, parent, false)
         return SearchListPhotoHolder(view)
     }
 
@@ -29,8 +31,8 @@ class SearchListPhotoAdapter() :
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(photo: Photo?) {
-            val imgPhoto: ImageView = itemView.findViewById(R.id.imgPhoto)
-            Glide.with(itemView).load(photo?.urls?.small).into(imgPhoto)
+            val imgPhoto: ImageView = itemView.findViewById(R.id.imgSearchPhoto)
+            Glide.with(itemView).load(photo?.urls?.full).into(imgPhoto)
         }
     }
 }

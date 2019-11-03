@@ -1,56 +1,44 @@
 package com.javdiana.getphotos.view.searchphotos
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.javdiana.getphotos.api.service.PhotosService
-import com.javdiana.getphotos.api.service.Utils
+import com.javdiana.getphotos.datasource.search.SearchPhotoDataSourceFactory
 import com.javdiana.getphotos.model.Photo
 import com.javdiana.getphotos.view.base.BaseViewModel
-import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.disposables.CompositeDisposable
+import retrofit2.http.Query
 
 class SearchListPhotosViewModel() : BaseViewModel() {
-    var searchPhotos = MutableLiveData<ArrayList<Photo>>()
-    var query: String = "office"
+    var query = ""
+    lateinit var searchPhotos: LiveData<PagedList<Photo>>
+    private val photosService = PhotosService.getInstance()
+    private val compositeDisposable = CompositeDisposable()
+    private val pageSize = 30
+    private lateinit var searchPhotosDataSourceFactory: SearchPhotoDataSourceFactory
 
-    private fun getObserver(): Observer<ArrayList<Photo>> {
-        return object : Observer<ArrayList<Photo>> {
-            override fun onNext(photo: ArrayList<Photo>) {
-                Log.d(TAG, "onNext: $photo")
-                searchPhotos.postValue(photo)
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                addDisposable(d)
-            }
-
-            override fun onError(e: Throwable) {
-                Log.d(TAG, "onError: ${e.message}")
-            }
-
-            override fun onComplete() {
-                Log.d(TAG, "onComplete")
-            }
-        }
+    fun configDataSourceFactory(){
+        searchPhotosDataSourceFactory = SearchPhotoDataSourceFactory(
+            compositeDisposable,
+            photosService,
+            query
+        )
+        val config = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setInitialLoadSizeHint(pageSize * 2)
+            .setEnablePlaceholders(false)
+            .build()
+        searchPhotos =
+            LivePagedListBuilder<Int, Photo>(searchPhotosDataSourceFactory, config).build()
     }
 
-    fun getPhotos() {
-        val myObservable = getObservablePhotos()
-
-        val myObserver = getObserver()
-
-        myObservable?.subscribeOn(Schedulers.newThread())?.subscribe(myObserver)
+    fun retry() {
+        searchPhotosDataSourceFactory.searchPhotosLiveData.value?.retry()
     }
 
-    private fun getObservablePhotos(): Observable<ArrayList<Photo>>? {
-        return PhotosService.getInstance().getApi()
-                .getSearchedPhotos(query, Utils.API_KEY, NUMBER_PHOTOS)
-    }
-
-    companion object {
-        const val TAG = "Tag"
-        const val NUMBER_PHOTOS = 30
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 }

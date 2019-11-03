@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.javdiana.getphotos.api.service.PhotosService
+import com.javdiana.getphotos.datasource.photos.PhotosDataSourceFactory
 import com.javdiana.getphotos.model.Photo
 import io.reactivex.disposables.CompositeDisposable
 
@@ -17,7 +18,10 @@ class ListPhotosViewModel : ViewModel() {
     private val photosDataSourceFactory: PhotosDataSourceFactory
 
     init {
-        photosDataSourceFactory = PhotosDataSourceFactory(compositeDisposable, photosService)
+        photosDataSourceFactory = PhotosDataSourceFactory(
+            compositeDisposable,
+            photosService
+        )
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)

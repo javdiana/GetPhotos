@@ -1,4 +1,4 @@
-package com.javdiana.getphotos.view.listphotos
+package com.javdiana.getphotos.datasource.photos
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
@@ -12,7 +12,11 @@ class PhotosDataSourceFactory(
 ) : DataSource.Factory<Int, Photo>() {
     val photosLiveData = MutableLiveData<PhotoDataSource>()
     override fun create(): DataSource<Int, Photo> {
-        val photosDataSource = PhotoDataSource(photosService, compositeDisposable)
+        val photosDataSource =
+            PhotoDataSource(
+                photosService,
+                compositeDisposable
+            )
         photosLiveData.postValue(photosDataSource)
         return photosDataSource
     }

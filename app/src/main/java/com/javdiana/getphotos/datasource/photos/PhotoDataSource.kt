@@ -1,4 +1,4 @@
-package com.javdiana.getphotos.view.listphotos
+package com.javdiana.getphotos.datasource.photos
 
 import androidx.paging.PageKeyedDataSource
 import com.javdiana.getphotos.api.service.PhotosService
@@ -21,20 +21,22 @@ class PhotoDataSource(
         callback: LoadInitialCallback<Int, Photo>
     ) {
         compositeDisposable.add(
-            photosService.getApi().getPhotos(Utils.API_KEY, NUMBER_PHOTOS, 1)
+            photosService.getApi().getPhotos(Utils.API_KEY,
+                NUMBER_PHOTOS, 1)
                 .subscribe { response ->
                     callback.onResult(response, null, 2)
-                    setRetry(Action { loadInitial(params, callback) })
+                    //setRetry(Action { loadInitial(params, callback) })
                 })
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
         compositeDisposable.add(
-            photosService.getApi().getPhotos(Utils.API_KEY, NUMBER_PHOTOS, params.key)
+            photosService.getApi().getPhotos(Utils.API_KEY,
+                NUMBER_PHOTOS, params.key)
                 .subscribe
                 { response ->
                     callback.onResult(response, params.key + 1)
-                    setRetry(Action { loadAfter(params, callback) })
+                    //setRetry(Action { loadAfter(params, callback) })
 
                 })
     }
