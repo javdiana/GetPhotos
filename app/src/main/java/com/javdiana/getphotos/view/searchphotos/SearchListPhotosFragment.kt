@@ -64,6 +64,7 @@ class SearchListPhotosFragment : Fragment() {
                     viewModel.search(newText)
                     true
                 } else {
+                    viewModel.search("cat")
                     false
                 }
 

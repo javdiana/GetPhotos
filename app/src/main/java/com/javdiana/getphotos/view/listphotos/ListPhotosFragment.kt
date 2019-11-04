@@ -20,7 +20,7 @@ class ListPhotosFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_list_photos, container, false)
-        setHasOptionsMenu(true)
+        //setHasOptionsMenu(true)
         return view
     }
 
