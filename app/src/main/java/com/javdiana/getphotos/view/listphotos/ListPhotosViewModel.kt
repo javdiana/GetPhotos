@@ -4,20 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.javdiana.getphotos.api.service.PhotosService
+import com.javdiana.getphotos.api.api.ApiService
 import com.javdiana.getphotos.datasource.photos.PhotosDataSourceFactory
 import com.javdiana.getphotos.model.Photo
 import io.reactivex.disposables.CompositeDisposable
 
 
 class ListPhotosViewModel : ViewModel() {
-    var photos: LiveData<PagedList<Photo>>
-    private val photosService = PhotosService.getInstance()
+    lateinit var photos: LiveData<PagedList<Photo>>
+    private val photosService = ApiService.INSTANCE
     private val compositeDisposable = CompositeDisposable()
     private val pageSize = 30
-    private val photosDataSourceFactory: PhotosDataSourceFactory
+    private lateinit var photosDataSourceFactory: PhotosDataSourceFactory
 
     init {
+        photos = getList()
+    }
+
+    private fun getList(): LiveData<PagedList<Photo>> {
         photosDataSourceFactory = PhotosDataSourceFactory(
             compositeDisposable,
             photosService
@@ -27,20 +31,17 @@ class ListPhotosViewModel : ViewModel() {
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
-        photos = LivePagedListBuilder<Int, Photo>(photosDataSourceFactory, config).build()
-    }
-
-    fun retry() {
-        photosDataSourceFactory.photosLiveData.value?.retry()
-    }
-
-    fun listIsEmpty(): Boolean {
-        return photos.value?.isEmpty() ?: true
+        return LivePagedListBuilder<Int, Photo>(photosDataSourceFactory, config).build()
     }
 
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
+    }
+
+    fun loadPhotos() {
+        photosDataSourceFactory.photosLiveData.value?.invalidate()
+        photos = getList()
     }
 
 }
