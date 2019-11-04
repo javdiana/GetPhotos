@@ -21,5 +21,5 @@ interface Api {
         @Query("client_id") clientId: String,
         @Query("per_page") perPage: Int,
         @Query("page") page: Int
-    ): Observable<Result>
+    ): Single<Result>
 }

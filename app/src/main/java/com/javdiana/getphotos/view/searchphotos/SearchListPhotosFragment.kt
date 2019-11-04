@@ -39,9 +39,9 @@ class SearchListPhotosFragment : Fragment() {
                 if (it.isEmpty()) {
                     tvNoItems.visibility = View.VISIBLE
                 } else {
-                    adapter.submitList(it)
                     tvNoItems.visibility = View.GONE
                 }
+                adapter.submitList(it)
             })
     }
 
