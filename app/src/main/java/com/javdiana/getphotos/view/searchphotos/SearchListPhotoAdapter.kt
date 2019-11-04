@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ class SearchListPhotoAdapter(private val retry: () -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchListPhotoHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.search_image_photo, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.image_item, parent, false)
         return SearchListPhotoHolder(view)
     }
 
@@ -31,7 +32,13 @@ class SearchListPhotoAdapter(private val retry: () -> Unit) :
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(photo: Photo?) {
-            val imgPhoto: ImageView = itemView.findViewById(R.id.imgSearchPhoto)
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            );
+            layoutParams.setMargins(8, 8, 8, 8);
+            itemView.layoutParams = layoutParams
+            val imgPhoto: ImageView = itemView.findViewById(R.id.imgPhoto)
             Glide.with(itemView).load(photo?.urls?.full).into(imgPhoto)
         }
     }

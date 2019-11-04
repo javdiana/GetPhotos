@@ -19,8 +19,6 @@ k
 ;app/src/main/java/com/javdiana/getphotos/model/user/User.kt,1\0\1079b987501f1b693ce08325531ab2b768b78986
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
-‚
-Rapp/src/main/java/com/javdiana/getphotos/view/searchphotos/SearchPhotosFragment.kt,4\f\4f4ea1386dcefdc3229714e53c7c845a5a502a90
 |
 Lapp/src/main/java/com/javdiana/getphotos/view/listphotos/ListPhotoAdapter.kt,6\7\679390fd7730b86a66576bd90f4321589a920380
 h

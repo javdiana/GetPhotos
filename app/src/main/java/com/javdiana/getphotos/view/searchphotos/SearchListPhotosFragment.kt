@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.javdiana.getphotos.NetworkManager
 import com.javdiana.getphotos.R
 import com.javdiana.getphotos.R.layout
 import kotlinx.android.synthetic.main.fragment_list_photos.*
@@ -31,12 +32,21 @@ class SearchListPhotosFragment : Fragment() {
 
     private fun initPhotos() {
         rvPhotos.layoutManager = LinearLayoutManager(activity)
-        adapter = SearchListPhotoAdapter { viewModel.retry() }
-        rvPhotos.adapter = adapter
-        viewModel.searchPhotos?.observe(
-            this, Observer {
-                adapter.submitList(it)
-            })
+        if (NetworkManager.isNetworkAvailable(context)) {
+            adapter = SearchListPhotoAdapter { viewModel.retry() }
+            rvPhotos.adapter = adapter
+            viewModel.searchPhotos.observe(
+                this, Observer {
+                    if (it == null) {
+                        tvNoItems.visibility = View.VISIBLE
+                    } else {
+                        adapter.submitList(it)
+                        tvNoItems.visibility = View.GONE
+                    }
+                })
+        } else {
+            Toast.makeText(context, "You have not Internet", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
