@@ -6,10 +6,8 @@ import com.javdiana.getphotos.api.Api
 import com.javdiana.getphotos.api.api.ApiConstants
 import com.javdiana.getphotos.model.Photo
 import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
-import io.reactivex.schedulers.Schedulers
 
 class SearchPhotoDataSource(
     private val service: Api,
@@ -55,17 +53,6 @@ class SearchPhotoDataSource(
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
         //todo
-    }
-
-    fun retry() {
-        if (retryCompletable != null) {
-            compositeDisposable.add(
-                retryCompletable!!
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-            )
-        }
     }
 
     private fun setRetry(action: Action?) {

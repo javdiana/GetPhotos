@@ -22,10 +22,6 @@ class SearchListPhotosViewModel : ViewModel() {
         searchPhotos = getList()
     }
 
-    fun retry() {
-        searchPhotosDataSourceFactory.searchPhotosLiveData.value?.retry()
-    }
-
     private fun getList(): LiveData<PagedList<Photo>> {
         searchPhotosDataSourceFactory = SearchPhotoDataSourceFactory(
             compositeDisposable,
