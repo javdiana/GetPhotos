@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.javdiana.getphotos.api.service.PhotosService
+import com.javdiana.getphotos.api.api.ApiService
 import com.javdiana.getphotos.datasource.search.SearchPhotoDataSourceFactory
 import com.javdiana.getphotos.model.Photo
 import io.reactivex.disposables.CompositeDisposable
 
 class SearchListPhotosViewModel : ViewModel() {
     var searchPhotos: LiveData<PagedList<Photo>>
-    private val photosService = PhotosService.instance
+    private val photosService = ApiService.INSTANCE
     private val compositeDisposable = CompositeDisposable()
     private val pageSize = 30
     private lateinit var searchPhotosDataSourceFactory: SearchPhotoDataSourceFactory

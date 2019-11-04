@@ -2,8 +2,8 @@ package com.javdiana.getphotos.datasource.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.javdiana.getphotos.api.PhotosApi
-import com.javdiana.getphotos.api.service.ServiceConstants
+import com.javdiana.getphotos.api.Api
+import com.javdiana.getphotos.api.api.ApiConstants
 import com.javdiana.getphotos.model.Photo
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +12,7 @@ import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
 
 class SearchPhotoDataSource(
-    private val photosService: PhotosApi,
+    private val service: Api,
     private val compositeDisposable: CompositeDisposable,
     private val query: MutableLiveData<String>
 ) : PageKeyedDataSource<Int, Photo>() {
@@ -23,9 +23,9 @@ class SearchPhotoDataSource(
         callback: LoadInitialCallback<Int, Photo>
     ) {
         compositeDisposable.add(
-            photosService.getSearchedPhotos(
+            service.getSearchedPhotos(
                 query.value,
-                ServiceConstants.API_KEY,
+                ApiConstants.API_KEY,
                 NUMBER_PHOTOS,
                 1
             )
@@ -40,8 +40,8 @@ class SearchPhotoDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
         compositeDisposable.add(
-            photosService.getSearchedPhotos(
-                query.value, ServiceConstants.API_KEY,
+            service.getSearchedPhotos(
+                query.value, ApiConstants.API_KEY,
                 NUMBER_PHOTOS, params.key
             )
                 .subscribe(

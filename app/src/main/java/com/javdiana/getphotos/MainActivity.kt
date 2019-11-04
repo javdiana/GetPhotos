@@ -15,25 +15,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragment1 = ListPhotosFragment()
-        val fragment2 = SearchListPhotosFragment()
+        val fragmentListPhotos = ListPhotosFragment()
+        val fragmentSearchPhotos = SearchListPhotosFragment()
         val fm = supportFragmentManager
-        var active: Fragment = fragment1
+        var active: Fragment = fragmentListPhotos
 
-        fm.beginTransaction().add(R.id.fragment_container, fragment2, "SearchListPhotosFragment")
-            .hide(fragment2).commit();
-        fm.beginTransaction().add(R.id.fragment_container, fragment1, "ListPhotosFragment")
+        fm.beginTransaction().add(R.id.fragment_container, fragmentSearchPhotos, "SearchListPhotosFragment")
+            .hide(fragmentSearchPhotos).commit();
+        fm.beginTransaction().add(R.id.fragment_container, fragmentListPhotos, "ListPhotosFragment")
             .commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 list_photos -> {
-                    fm.beginTransaction().hide(active).show(fragment1).commit();
-                    active = fragment1;
+                    fm.beginTransaction().hide(active).show(fragmentListPhotos).commit();
+                    active = fragmentListPhotos;
                 }
                 search_photos -> {
-                    fm.beginTransaction().hide(active).show(fragment2).commit();
-                    active = fragment2;
+                    fm.beginTransaction().hide(active).show(fragmentSearchPhotos).commit();
+                    active = fragmentSearchPhotos;
                 }
             }
             return@setOnNavigationItemSelectedListener true

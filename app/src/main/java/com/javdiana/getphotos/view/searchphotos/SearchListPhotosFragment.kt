@@ -9,12 +9,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.javdiana.getphotos.R
 import com.javdiana.getphotos.R.layout
+import com.javdiana.getphotos.view.ListPhotoAdapter
 import kotlinx.android.synthetic.main.fragment_list_photos.*
 
 
 class SearchListPhotosFragment : Fragment() {
     private lateinit var viewModel: SearchListPhotosViewModel
-    private lateinit var adapter: SearchListPhotoAdapter
+    private lateinit var adapter: ListPhotoAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +47,7 @@ class SearchListPhotosFragment : Fragment() {
 
     private fun initPhotos() {
         rvPhotos.layoutManager = LinearLayoutManager(activity)
-        adapter = SearchListPhotoAdapter { viewModel.retry() }
+        adapter = ListPhotoAdapter(layout.search_item)
         rvPhotos.adapter = adapter
     }
 

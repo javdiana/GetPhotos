@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.javdiana.getphotos.R
 import com.javdiana.getphotos.R.id.update
+import com.javdiana.getphotos.view.ListPhotoAdapter
 import kotlinx.android.synthetic.main.fragment_list_photos.*
 
 class ListPhotosFragment : Fragment() {
@@ -47,7 +48,7 @@ class ListPhotosFragment : Fragment() {
 
     private fun initPhotos() {
         rvPhotos.layoutManager = GridLayoutManager(activity, 3)
-        adapter = ListPhotoAdapter { viewModel.retry() }
+        adapter = ListPhotoAdapter(R.layout.image_item)
         rvPhotos.adapter = adapter
     }
 
