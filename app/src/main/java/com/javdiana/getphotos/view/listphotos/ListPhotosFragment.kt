@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.javdiana.getphotos.R
 import com.javdiana.getphotos.R.id.update
@@ -20,7 +21,7 @@ class ListPhotosFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_list_photos, container, false)
-        //setHasOptionsMenu(true)
+        setHasOptionsMenu(true)
         return view
     }
 
@@ -31,7 +32,8 @@ class ListPhotosFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel = ListPhotosViewModel()
+        viewModel = ViewModelProviders.of(this).get(ListPhotosViewModel::class.java)
+
 
         viewModel.photos.observe(this, Observer {
             if (it.isEmpty()) {

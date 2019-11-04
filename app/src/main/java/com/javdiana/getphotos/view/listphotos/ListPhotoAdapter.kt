@@ -31,9 +31,6 @@ class ListPhotoAdapter(private val retry: () -> Unit) :
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(photo: Photo?) {
-//            val params = itemView.layoutParams
-//            params.height = params.width / 2
-//            itemView.layoutParams = params
             val imgPhoto: ImageView = itemView.findViewById(imgPhoto)
             Glide.with(itemView).load(photo!!.urls.thumb).into(imgPhoto)
         }

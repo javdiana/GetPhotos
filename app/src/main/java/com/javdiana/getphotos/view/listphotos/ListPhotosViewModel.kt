@@ -18,7 +18,7 @@ class ListPhotosViewModel : ViewModel() {
     private lateinit var photosDataSourceFactory: PhotosDataSourceFactory
 
     init {
-        loadPhotos()
+        photos = getList()
     }
 
     private fun getList(): LiveData<PagedList<Photo>> {
@@ -44,6 +44,7 @@ class ListPhotosViewModel : ViewModel() {
     }
 
     fun loadPhotos() {
+        photosDataSourceFactory.photosLiveData.value?.invalidate()
         photos = getList()
     }
 

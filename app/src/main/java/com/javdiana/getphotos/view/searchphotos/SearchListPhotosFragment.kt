@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.javdiana.getphotos.R
 import com.javdiana.getphotos.R.layout
@@ -30,7 +31,7 @@ class SearchListPhotosFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel = SearchListPhotosViewModel()
+        viewModel = ViewModelProviders.of(this).get(SearchListPhotosViewModel::class.java)
 
         viewModel.searchPhotos.observe(
             this, Observer {
@@ -64,7 +65,7 @@ class SearchListPhotosFragment : Fragment() {
                     viewModel.search(newText)
                     true
                 } else {
-                    viewModel.search("cat")
+                    viewModel.search("all")
                     false
                 }
 
