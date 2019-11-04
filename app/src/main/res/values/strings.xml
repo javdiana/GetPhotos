@@ -3,6 +3,7 @@
     <string name="list_photo">list photo</string>
     <string name="search_list_photo">search list photo</string>
     <string name="search_title">search</string>
+    <string name="update_title">update</string>
     <string name="dont_find_photos">Don\'t find photos</string>
     <string name="toast_for_search">Put arguments on separate lines</string>
 </resources>

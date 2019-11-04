@@ -24,7 +24,7 @@ class SearchListPhotoAdapter(private val retry: () -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchListPhotoHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.image_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.search_item, parent, false)
         return SearchListPhotoHolder(view)
     }
 
@@ -32,14 +32,8 @@ class SearchListPhotoAdapter(private val retry: () -> Unit) :
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(photo: Photo?) {
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-            );
-            layoutParams.setMargins(8, 8, 8, 8);
-            itemView.layoutParams = layoutParams
             val imgPhoto: ImageView = itemView.findViewById(R.id.imgPhoto)
-            Glide.with(itemView).load(photo?.urls?.full).into(imgPhoto)
+            Glide.with(itemView).load(photo?.urls?.small).into(imgPhoto)
         }
     }
 }

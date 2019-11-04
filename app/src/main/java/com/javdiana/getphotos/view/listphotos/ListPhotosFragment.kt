@@ -1,15 +1,12 @@
 package com.javdiana.getphotos.view.listphotos
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.javdiana.getphotos.NetworkManager
 import com.javdiana.getphotos.R
+import com.javdiana.getphotos.R.id.update
 import kotlinx.android.synthetic.main.fragment_list_photos.*
 
 class ListPhotosFragment : Fragment() {
@@ -22,7 +19,9 @@ class ListPhotosFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_list_photos, container, false)
+        val view = inflater.inflate(R.layout.fragment_list_photos, container, false)
+        setHasOptionsMenu(true)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,23 +32,32 @@ class ListPhotosFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel = ListPhotosViewModel()
+
+        viewModel.photos.observe(this, Observer {
+            if (it.isEmpty()) {
+                tvNoItems.visibility = View.VISIBLE
+            } else {
+                adapter.submitList(it)
+                tvNoItems.visibility = View.GONE
+            }
+        })
     }
 
     private fun initPhotos() {
         rvPhotos.layoutManager = GridLayoutManager(activity, 3)
-        if (NetworkManager.isNetworkAvailable(context)) {
-            adapter = ListPhotoAdapter { viewModel.retry() }
-            rvPhotos.adapter = adapter
-            viewModel.photos.observe(this, Observer {
-                if (it == null) {
-                    tvNoItems.visibility = View.VISIBLE
-                } else {
-                    adapter.submitList(it)
-                    tvNoItems.visibility = View.GONE
-                }
-            })
-        } else {
-            Toast.makeText(context, "You have not Internet", Toast.LENGTH_SHORT).show()
+        adapter = ListPhotoAdapter { viewModel.retry() }
+        rvPhotos.adapter = adapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.update_photos, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == update) {
+            viewModel.loadPhotos()
         }
+        return super.onOptionsItemSelected(item)
     }
 }

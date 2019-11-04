@@ -5,21 +5,13 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class PhotosService {
-    private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(Utils.BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .build()
-
-    companion object {
-        fun getInstance(): PhotosService {
-            return PhotosService()
-        }
+object PhotosService {
+    val instance: PhotosApi by lazy {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(ServiceConstants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+        return@lazy retrofit.create(PhotosApi::class.java)
     }
-
-    fun getApi(): PhotosApi {
-        return retrofit.create(PhotosApi::class.java)
-    }
-
 }

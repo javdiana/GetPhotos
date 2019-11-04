@@ -15,25 +15,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ListPhotosFragment())
-            .commit()
+        val fragment1 = ListPhotosFragment()
+        val fragment2 = SearchListPhotosFragment()
+        val fm = supportFragmentManager
+        var active: Fragment = fragment1
+
+        fm.beginTransaction().add(R.id.fragment_container, fragment2, "SearchListPhotosFragment")
+            .hide(fragment2).commit();
+        fm.beginTransaction().add(R.id.fragment_container, fragment1, "ListPhotosFragment")
+            .commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
-            var fragment: Fragment? = null
             when (it.itemId) {
                 list_photos -> {
-                    fragment = ListPhotosFragment()
+                    fm.beginTransaction().hide(active).show(fragment1).commit();
+                    active = fragment1;
                 }
                 search_photos -> {
-                    fragment = SearchListPhotosFragment()
+                    fm.beginTransaction().hide(active).show(fragment2).commit();
+                    active = fragment2;
                 }
             }
-            if (fragment != null) {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
-                    .commit()
-            }
-
             return@setOnNavigationItemSelectedListener true
         }
     }

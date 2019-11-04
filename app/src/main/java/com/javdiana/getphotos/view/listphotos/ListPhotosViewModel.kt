@@ -11,13 +11,17 @@ import io.reactivex.disposables.CompositeDisposable
 
 
 class ListPhotosViewModel : ViewModel() {
-    var photos: LiveData<PagedList<Photo>>
-    private val photosService = PhotosService.getInstance()
+    lateinit var photos: LiveData<PagedList<Photo>>
+    private val photosService = PhotosService.instance
     private val compositeDisposable = CompositeDisposable()
     private val pageSize = 30
-    private val photosDataSourceFactory: PhotosDataSourceFactory
+    private lateinit var photosDataSourceFactory: PhotosDataSourceFactory
 
     init {
+        loadPhotos()
+    }
+
+    private fun getList(): LiveData<PagedList<Photo>> {
         photosDataSourceFactory = PhotosDataSourceFactory(
             compositeDisposable,
             photosService
@@ -27,20 +31,20 @@ class ListPhotosViewModel : ViewModel() {
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
-        photos = LivePagedListBuilder<Int, Photo>(photosDataSourceFactory, config).build()
+        return LivePagedListBuilder<Int, Photo>(photosDataSourceFactory, config).build()
     }
 
     fun retry() {
         photosDataSourceFactory.photosLiveData.value?.retry()
     }
 
-    fun listIsEmpty(): Boolean {
-        return photos.value?.isEmpty() ?: true
-    }
-
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
+    }
+
+    fun loadPhotos() {
+        photos = getList()
     }
 
 }

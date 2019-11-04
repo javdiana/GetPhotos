@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#181717</color>
+    <color name="ic_refresh_background">#26A69A</color>
 </resources>
