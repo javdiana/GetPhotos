@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
 
 class SearchPhotoDataSource(
-    private val service: Api,
+    private val api: Api,
     private val compositeDisposable: CompositeDisposable,
     private val query: MutableLiveData<String>
 ) : PageKeyedDataSource<Int, Photo>() {
@@ -21,7 +21,7 @@ class SearchPhotoDataSource(
         callback: LoadInitialCallback<Int, Photo>
     ) {
         compositeDisposable.add(
-            service.getSearchedPhotos(
+            api.getSearchedPhotos(
                 query.value,
                 ApiConstants.API_KEY,
                 NUMBER_PHOTOS,
@@ -38,7 +38,7 @@ class SearchPhotoDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
         compositeDisposable.add(
-            service.getSearchedPhotos(
+            api.getSearchedPhotos(
                 query.value, ApiConstants.API_KEY,
                 NUMBER_PHOTOS, params.key
             )

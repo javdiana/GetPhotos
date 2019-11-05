@@ -98,3 +98,5 @@ c
 3app/src/main/java/com/javdiana/getphotos/api/Api.kt,e\3\e3682e254141403cdf09628dc5ab1526f85af733
 †
 Vapp/src/main/java/com/javdiana/getphotos/view/searchphotos/SearchListPhotosFragment.kt,e\a\eaf06654fccf2495464db4615fe5af35b21c3716
+p
+@app/src/main/java/com/javdiana/getphotos/api/api/ApiConstants.kt,f\4\f4068b3ffad0489d108553688272e4c6d78523cb

@@ -7,8 +7,8 @@ data class Result(
 ) {
     fun results(): MutableList<Photo> {
         val photos: MutableList<Photo> = mutableListOf()
-        for (photo in results) {
-            photos.add(photo)
+        results.forEach {
+            photos.add(it)
         }
         return photos
     }

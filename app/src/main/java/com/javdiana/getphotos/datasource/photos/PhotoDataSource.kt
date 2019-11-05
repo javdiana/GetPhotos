@@ -5,13 +5,11 @@ import com.javdiana.getphotos.api.Api
 import com.javdiana.getphotos.api.api.ApiConstants
 import com.javdiana.getphotos.model.Photo
 import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
-import io.reactivex.schedulers.Schedulers
 
 class PhotoDataSource(
-    private val service: Api,
+    private val api: Api,
     private val compositeDisposable: CompositeDisposable
 ) : PageKeyedDataSource<Int, Photo>() {
     private var retryCompletable: Completable? = null
@@ -21,7 +19,7 @@ class PhotoDataSource(
         callback: LoadInitialCallback<Int, Photo>
     ) {
         compositeDisposable.add(
-            service.getPhotos(
+            api.getPhotos(
                 ApiConstants.API_KEY,
                 NUMBER_PHOTOS, 1
             )
@@ -36,7 +34,7 @@ class PhotoDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Photo>) {
         compositeDisposable.add(
-            service.getPhotos(
+            api.getPhotos(
                 ApiConstants.API_KEY,
                 NUMBER_PHOTOS, params.key
             )
