@@ -3,23 +3,26 @@ package com.javdiana.getphotos.datasource.search
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.javdiana.getphotos.api.Api
+import com.javdiana.getphotos.datasource.PhotoDataSource
 import com.javdiana.getphotos.model.Photo
+import com.javdiana.getphotos.repository.PhotosRepository
 import io.reactivex.disposables.CompositeDisposable
 
 class SearchPhotoDataSourceFactory(
     private val compositeDisposable: CompositeDisposable,
-    private val service: Api,
-    private val query: MutableLiveData<String>
+    private val query: MutableLiveData<String>,
+    private val photosRepository: PhotosRepository
 ) : DataSource.Factory<Int, Photo>() {
-    val searchPhotosLiveData = MutableLiveData<SearchPhotoDataSource>()
+    val photosLiveData = MutableLiveData<PhotoDataSource>()
     override fun create(): DataSource<Int, Photo> {
         val searchPhotoDataSource =
-            SearchPhotoDataSource(
-                service,
+            PhotoDataSource(
+                photosRepository,
                 compositeDisposable,
-                query
+                query,
+                true
             )
-        searchPhotosLiveData.postValue(searchPhotoDataSource)
+        photosLiveData.postValue(searchPhotoDataSource)
         return searchPhotoDataSource
     }
 }

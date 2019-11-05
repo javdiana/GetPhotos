@@ -2,7 +2,7 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/imgPhoto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="@dimen/height_photo"
     android:layout_marginStart="@dimen/margin_4"
     android:layout_marginTop="@dimen/margin"
     android:layout_marginEnd="@dimen/margin_4"
