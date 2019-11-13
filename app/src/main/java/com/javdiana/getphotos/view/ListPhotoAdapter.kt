@@ -4,21 +4,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.javdiana.getphotos.R
 import com.javdiana.getphotos.R.id.imgPhoto
 import com.javdiana.getphotos.model.Photo
 import com.javdiana.getphotos.view.ListPhotoAdapter.ListPhotoHolder
 
 
-class ListPhotoAdapter(@LayoutRes val layout:Int) :
+class ListPhotoAdapter(@LayoutRes val layout: Int) :
     PagedListAdapter<Photo, ListPhotoHolder>(PostDiffCallback()) {
 
     override fun onBindViewHolder(holder: ListPhotoHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), layout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListPhotoHolder {
@@ -31,9 +33,14 @@ class ListPhotoAdapter(@LayoutRes val layout:Int) :
     class ListPhotoHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(photo: Photo?) {
+        fun bind(photo: Photo?, layout: Int) {
             val imgPhoto: ImageView = itemView.findViewById(imgPhoto)
-            Glide.with(itemView).load(photo!!.urls.small).into(imgPhoto)
+
+            if (R.layout.search_item == layout) {
+                Glide.with(itemView).load(photo!!.urls.small).into(imgPhoto)
+            }else{
+                Glide.with(itemView).load(photo!!.urls.thumb).into(imgPhoto)
+            }
         }
     }
 }

@@ -5,4 +5,5 @@
     <dimen name="height_photo">100dp</dimen>
     <dimen name="border">2dp</dimen>
     <dimen name="margin_4">4dp</dimen>
+    <dimen name="height_for_large_image">300dp</dimen>
 </resources>
